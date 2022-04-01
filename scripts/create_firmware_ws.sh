@@ -11,11 +11,14 @@ PREFIX=$(ros2 pkg prefix micro_ros_setup)
 print_available_platforms () {
   echo "Available platforms:"
   pushd $PREFIX/config >/dev/null
-  for rtos in $(ls -d */ | cut -f1 -d'/'); do
+  for rtos in $(ls -d */ | cut -f1 -d'/'); do  # $(Bash performs the expansion by executin
+  #g the command in a subshell environment and replacing the command substitution with the standard output of the command) meaning   
+  # ls is list  ls -d */ will display ONLY the directories from within your current working directory. 
+  #https://explainshell.com/explain?cmd=ls+-d+*%2F+%7C+cut+-f1+-d%27%2F%27   best explanation
     echo ". $rtos"
-    if [ -f $PREFIX/config/$rtos/generic/supported_platforms ];then
+    if [ -f $PREFIX/config/$rtos/generic/supported_platforms ];then # -f is if file is there and it is regular
 
-        while read line; do
+        while read line; do    # read and print the palatforms 
             echo "+-- $line"
         done < $PREFIX/config/$rtos/generic/supported_platforms
     else
@@ -31,7 +34,7 @@ print_available_platforms () {
 
 # Retrieving RTOS and Platform
 
-if [ $# -ge 1 ]; then
+if [ $# -ge 1 ]; then  #if the number of passed parameters is greater than or equal to 1
     RTOS=$1
 else
     echo "Syntax: ros2 run micro_ros_setup create_firmware_ws.sh <package> [<platform>]"
@@ -39,7 +42,7 @@ else
     exit 1
 fi
 
-if [ $# -ge 2 ]; then
+if [ $# -ge 2 ]; then  #if the number of passed parameters is greater than or equal to 2
     PLATFORM=$2
 else
     PLATFORM=generic
