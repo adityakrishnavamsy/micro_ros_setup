@@ -85,7 +85,7 @@ else
     TARGET_FOLDER=$PLATFORM
 fi
 
-pushd $FW_TARGETDIR >/dev/null
+pushd $FW_TARGETDIR >/dev/null  #pushd , popd , and dirs are shell builtins which allow you manipulate the directory stack
     # Creating dev directory
     mkdir $DEV_WS_DIR
 
@@ -99,7 +99,7 @@ pushd $FW_TARGETDIR >/dev/null
         ros2 run micro_ros_setup create_ws.sh mcu_ws $PREFIX/config/client_ros2_packages.txt $PREFIX/config/$RTOS/$TARGET_FOLDER/client_uros_packages.repos
         cp $PREFIX/config/$RTOS/$TARGET_FOLDER/client-colcon.meta mcu_ws/colcon.meta
     fi
-popd >/dev/null
+popd >/dev/null  #to reduce the printed info to the terminal
 
 # build the dev_ws
 . $(dirname $0)/clean_env.sh
